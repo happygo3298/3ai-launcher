@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3AI Launcher | 無料AI比較</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;color-scheme:light dark}*{box-sizing:border-box}body{margin:0;background:#f4f6fb;color:#1c2635}main{max-width:840px;margin:auto;padding:28px 16px 60px}h1{margin-bottom:5px;font-size:29px}p{line-height:1.7}.muted{color:#657082}.panel{background:#fff;border:1px solid #dde3eb;border-radius:18px;padding:22px;margin-top:20px;box-shadow:0 4px 18px #182f5010}textarea{width:100%;min-height:155px;resize:vertical;padding:14px;font:inherit;line-height:1.6;border:1px solid #acb6c4;border-radius:12px;background:#fff;color:#1c2635}button,a.btn{font:inherit;border:0;border-radius:11px;padding:12px 16px;cursor:pointer;text-decoration:none;font-weight:650;display:inline-flex;align-items:center;justify-content:center}button.primary{background:#1257c6;color:white}.secondary{background:#e9eef6;color:#193252}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.ai{border:1px solid #dbe1eb;border-radius:14px;padding:15px}.ai h2{font-size:18px;margin:0 0 10px}.ai button{width:100%}.status{min-height:25px;color:#165d3a;font-size:14px;margin-top:11px}footer{margin-top:20px;font-size:13px;color:#697485}a{color:#1557bf}@media(max-width:640px){.grid{grid-template-columns:1fr}.panel{padding:16px}h1{font-size:25px}}@media(prefers-color-scheme:dark){body{background:#101622;color:#e8edf6}.panel{background:#192332;border-color:#344155}textarea{background:#111a28;color:#eff5ff;border-color:#58657a}.ai{border-color:#35465b}.muted,footer{color:#a7b4c6}.secondary{background:#304157;color:#eff5ff}a{color:#8cb9ff}}
+</style>
+</head>
+<body><main>
+<h1>3AI Launcher</h1><p class="muted">ChatGPT・Gemini・Claudeに同じ質問を送るための、無料ランチャーです。</p>
+<section class="panel"><label for="question"><strong>質問を入力</strong></label><textarea id="question" placeholder="3つのAIに質問したい内容を入力してください"></textarea><div class="actions"><button class="primary" id="launch">質問をコピーして3つのAIを開く</button><button class="secondary" id="copy">質問だけコピー</button><button class="secondary" id="clear">消去</button></div><div id="status" class="status" aria-live="polite"></div><p class="muted" style="font-size:13px">※ブラウザのポップアップ設定によっては3つのタブが一度に開きません。その場合は下のボタンを個別に押してください。質問はクリップボードにコピーされますので、各AIの入力欄へ貼り付けて送信してください。</p></section>
+<section class="panel"><strong>AIを個別に開く</strong><div class="grid"><div class="ai"><h2>ChatGPT</h2><button class="secondary" data-url="https://chatgpt.com/">開く</button></div><div class="ai"><h2>Gemini</h2><button class="secondary" data-url="https://gemini.google.com/app">開く</button></div><div class="ai"><h2>Claude</h2><button class="secondary" data-url="https://claude.ai/new">開く</button></div></div></section>
+<footer>すべてブラウザ内で動作します。入力した質問はこのサイトのサーバーには送信・保存しません。各AIへの送信は、それぞれのサービス画面で行います。</footer>
+</main><script>
+const q=document.querySelector('#question'),s=document.querySelector('#status');
+const urls=['https://chatgpt.com/','https://gemini.google.com/app','https://claude.ai/new'];
+async function copy(){if(!q.value.trim()){s.textContent='質問を入力してください。';q.focus();return false}try{await navigator.clipboard.writeText(q.value);s.textContent='質問をコピーしました。各AIの入力欄に貼り付けてください。';return true}catch(e){q.select();s.textContent='自動コピーできませんでした。選択中の質問を手動でコピーしてください。';return false}}
+document.querySelector('#copy').onclick=copy;
+document.querySelector('#clear').onclick=()=>{q.value='';s.textContent='';q.focus()};
+document.querySelector('#launch').onclick=()=>{if(!q.value.trim()){s.textContent='質問を入力してください。';q.focus();return}const tabs=urls.map(url=>window.open(url,'_blank'));copy();if(tabs.some(t=>!t))s.textContent+=' タブが開かない場合は、ブラウザのポップアップ許可設定を確認してください。'};
+document.querySelectorAll('[data-url]').forEach(button=>button.onclick=()=>{copy();window.open(button.dataset.url,'_blank')});
+</script></body></html>
